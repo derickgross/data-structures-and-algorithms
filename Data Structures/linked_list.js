@@ -1,3 +1,4 @@
+// Given a list of method names to serve as a spec for functionality, an implementation of a linked list was created
 // Linked list codepen: https://codepen.io/derickgross/pen/EJRrKE
 
 class Node{
