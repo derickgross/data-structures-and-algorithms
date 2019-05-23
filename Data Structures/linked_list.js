@@ -1,8 +1,8 @@
 // Given a list of method names to serve as a spec for functionality, an implementation of a linked list was created
 // Linked list codepen: https://codepen.io/derickgross/pen/EJRrKE
 
-class Node{
-  constructor(data){
+class Node {
+  constructor(data) {
       // each new node has a data property...
     this.data = data;
       //  and a .next property with the value null
@@ -10,7 +10,7 @@ class Node{
   }
 }
 
-class LinkedList{
+class LinkedList {
   constructor() {
       // start with a "head" property with a value of null
     this.head = null;
