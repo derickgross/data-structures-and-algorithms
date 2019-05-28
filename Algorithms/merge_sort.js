@@ -10,7 +10,7 @@ function mergeSort(array) {
 }
 
 function mergeArrays(first, second) {
-  var result = [];
+  const result = [];
 
   while (!!first.length && !!second.length) {
     first[0] <= second[0] ? result.push(first.shift()) : result.push(second.shift())
@@ -18,3 +18,5 @@ function mergeArrays(first, second) {
 
   return result.concat(first, second);
 }
+
+module.exports { mergeSort, mergeArrays } 

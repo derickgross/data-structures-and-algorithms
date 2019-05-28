@@ -1,5 +1,7 @@
-// Given a list of method names to serve as a spec for functionality, an implementation of a linked list was created
+// Given a list of method names to serve as a spec for functionality as well as an implementation of array merge sort, an implementation of a linked list was created
 // Linked list codepen: https://codepen.io/derickgross/pen/EJRrKE
+
+import { mergeSort, mergeArrays } from '../Algorithms/merge_sort'
 
 class Node {
   constructor(data) {
@@ -129,42 +131,42 @@ class LinkedList {
       // sort the Linked List by each node's data, in ascending order
       // sorting functionality in progress
 
-    let currentNode = this.head;
-    let moves = 0;
+    // let currentNode = this.head;
+    // let moves = 0;
 
-    if (currentNode) {
-    	bubbleSort(currentNode, moves)
-    	currentNode = currentNode.next;
-    } else {
+    // if (currentNode) {
+    // 	bubbleSort(currentNode, moves)
+    // 	currentNode = currentNode.next;
+    // } else {
 
+    // }
+
+    const data = this.createArrayOfData(this.head);
+
+    const sortedData = mergeSort(data);
+
+    this.head = null;
+
+    for (let datum of sortedData) {
+      this.appendNode(datum);
     }
   }
 
   lastNode() {
     let walker = this.head;
-    while(walker.next){
+    while (walker.next) {
         walker = walker.next;
     }
     return walker;
   }
 
-  bubbleSortLowToHigh(node, moves) {
-    let placeholder;
-    let previousNode;
-      
-    while (!!node && !!node.next && moves < 100) {
-      if (node === this.head && (node.data > node.next.data)) {
-        placeholder = node;
-        this.head = node.next;
-        this.head.next = placeholder;
+  createArrayOfData(firstNode) {
+    let currentElementArray = [firstNode.data];
 
-        moves++;
-
-        node = node.next;
-      } else {
-      	node = node.next;
-      	moves++;
-      }
+    if (!!firstNode.next) {
+      return currentElementArray.concat(createArrayOfData(firstNode.next));
+    } else {
+      return currentElementArray;
     }
   }
 }
