@@ -178,16 +178,6 @@ class LinkedList {
   }
 }
 
-let list = new LinkedList();
-list.appendNode(2);
-list.appendNode(3);
-list.appendNode(1);
-list.appendNode(5);
-list.appendNode(4);
-list.sort();
-
-console.log(list.head.data);
-console.log(list.head.next.data);
-console.log(list.head.next.next.data);
-console.log(list.head.next.next.next.data);
-console.log(list.head.next.next.next.next.data);
+module.exports = {
+  LinkedList
+}

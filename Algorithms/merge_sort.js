@@ -18,5 +18,3 @@ function mergeArrays(first, second) {
 
   return result.concat(first, second);
 }
-
-export { mergeSort, mergeArrays }
