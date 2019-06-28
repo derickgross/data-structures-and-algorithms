@@ -18,3 +18,7 @@ function mergeArrays(first, second) {
 
   return result.concat(first, second);
 }
+
+module.exports = {
+  mergeSort
+}
