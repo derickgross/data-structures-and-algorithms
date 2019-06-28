@@ -1,6 +1,8 @@
 // Given a list of method names to serve as a spec for functionality as well as an implementation of array merge sort, an implementation of a linked list was created
 // Linked list codepen: https://codepen.io/derickgross/pen/EJRrKE
 
+import mergeSort from "../Algorithms/merge_sort"
+
 
 class Node {
   constructor(data) {
@@ -129,7 +131,7 @@ class LinkedList {
   sort() {
     const data = this.createArrayOfData(this.head);
 
-    const sortedData = this.mergeSort(data);
+    const sortedData = mergeSort(data);
 
     this.head = null;
 
@@ -154,27 +156,6 @@ class LinkedList {
     } else {
       return currentElementArray;
     }
-  }
-  
-  mergeSort(array) {
-    if (array.length > 1) {
-      const arrayRight = array.splice(array.length/2);
-
-      return this.mergeArrays(this.mergeSort(array), this.mergeSort(arrayRight));
-    }
-    else {
-      return array;
-    }
-  }
-
-  mergeArrays(first, second) {
-    const result = [];
-
-    while (!!first.length && !!second.length) {
-      first[0] <= second[0] ? result.push(first.shift()) : result.push(second.shift())
-    }
-
-    return result.concat(first, second);
   }
 }
 
