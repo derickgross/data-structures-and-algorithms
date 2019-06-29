@@ -1,7 +1,7 @@
 // Given a list of method names to serve as a spec for functionality as well as an implementation of array merge sort, an implementation of a linked list was created
 // Linked list codepen: https://codepen.io/derickgross/pen/EJRrKE
 
-import mergeSort from "../Algorithms/merge_sort"
+const { mergeSort } = require("../Algorithms/merge_sort.js");
 
 
 class Node {
@@ -160,5 +160,6 @@ class LinkedList {
 }
 
 module.exports = {
-  LinkedList
+  LinkedList,
+  Node
 }
