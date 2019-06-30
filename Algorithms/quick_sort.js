@@ -15,3 +15,5 @@ function quickSort(arr){
   return (quickSort(left).concat([pivot].concat(quickSort(right))));
   
 }
+
+module.exports = quickSort;
