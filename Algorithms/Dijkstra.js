@@ -32,7 +32,7 @@ class dijkstra {
 				};
 			} else {
 				nodeData[node] = {
-					"weightFromFirst": null,
+					"weightFromFirst": Number.MAX_SAFE_INTEGER, // approximates infinity
 					"previousNode": null
 				};
 			}
@@ -41,13 +41,13 @@ class dijkstra {
 		return nodeData;
 	}
 
-	// takes two arguments: the currently visited node, and an object with keys representing child nodes of the current node and values representing the weight of the unidirectional edge from current node to child node
-	examineNodes(current, nodes) {
+	// takes an object with keys representing child nodes of the current node and values representing the weight of the unidirectional edge from current node to child node
+	examineNodes(nodes) {
 		for (let node in nodes) {
 			if (!nodeData[node]["previousNode"]) {
 				nodeData[node] = {
-					"weightFromFirst": nodeData[current]["weightFromFirst"] + graph[current][node],
-					"previousNode": current
+					"weightFromFirst": nodeData[this.currentNode]["weightFromFirst"] + graph[this.currentNode][node],
+					"previousNode": this.currentNode
 				}
 			}
 		}
