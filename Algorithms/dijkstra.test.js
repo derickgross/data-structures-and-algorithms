@@ -10,13 +10,10 @@ test('initializes node data for each node in graph', () => {
 	  6: {}
 	};
 
-	const d = new dijkstra(graph);
+	const d = new dijkstra(graph, 1);
 
-	console.log(d.nodeData);
-	console.log(Object.keys(d.nodeData[6]));
-
-	expect(d.nodeData[1].weightFromFirst).toBe(0);
-	expect(d.nodeData[5].weightFromFirst).toBe(null);
+	expect(d.nodeData[1]["weightFromFirst"]).toBe(0);
+	expect(d.nodeData[5]["weightFromFirst"]).toBe(Number.MAX_SAFE_INTEGER);
 })
 
 test('initializes an unvisited node for each node in graph', () => {
@@ -29,25 +26,25 @@ test('initializes an unvisited node for each node in graph', () => {
 	  6: {}
 	};
 
-	const d = new dijkstra(graph);
+	const d = new dijkstra(graph, 1);
 
 	expect(Object.keys(graph).length).toBe(d.unvisitedNodes.length);
 })
 
-test('initializes no visited nodes', () => {
-	const graph = {
-	  1: {2: 5, 3: 2},
-	  2: {4: 4, 5: 2},
-	  3: {2: 8, 5: 7},
-	  4: {5: 6, 6: 3},
-	  5: {6: 1},
-	  6: {}
-	};
+// test('initializes no visited nodes', () => {
+// 	const graph = {
+// 	  1: {2: 5, 3: 2},
+// 	  2: {4: 4, 5: 2},
+// 	  3: {2: 8, 5: 7},
+// 	  4: {5: 6, 6: 3},
+// 	  5: {6: 1},
+// 	  6: {}
+// 	};
 
-	const d = new dijkstra(graph);
+// 	const d = new dijkstra(graph, 1);
 
-	expect(d.visitedNodes.length).toBe(0);
-})
+// 	expect(d.visitedNodes.length).toBe(0);
+// })
 
 test('getChildNodes returns child nodes for first node in graph if currentNode is null', () => {
 	const graph = {
@@ -59,7 +56,7 @@ test('getChildNodes returns child nodes for first node in graph if currentNode i
 	  6: {}
 	};
 
-	const d = new dijkstra(graph);
+	const d = new dijkstra(graph, 1);
 
 	const childNodes = d.getChildNodes(d.currentNode);
 
@@ -79,12 +76,10 @@ test('getChildNodes returns proper child nodes for current node', () => {
 	};
 	let childNodes;
 
-	const d = new dijkstra(graph);
+	const d = new dijkstra(graph, 1);
 
 	d.currentNode = 2;
-	console.log(d.currentNode);
 	childNodes = d.getChildNodes(d.currentNode);
-	console.log(childNodes);
 
 	expect(childNodes[4]).toBe(4);
 	expect(childNodes[5]).toBe(2);
@@ -96,7 +91,32 @@ test('getChildNodes returns proper child nodes for current node', () => {
 	expect(childNodes[2]).toBe(undefined);
 })
 
-test('selectNode sets currentNode to first node when called on newly initialized dijkstra', () => {
+// test('selectNode sets currentNode to first node when called on newly initialized dijkstra', () => {
+// 	const graph = {
+// 	  1: {2: 5, 3: 2},
+// 	  2: {4: 4, 5: 2},
+// 	  3: {2: 8, 5: 7},
+// 	  4: {5: 6, 6: 3},
+// 	  5: {6: 1},
+// 	  6: {}
+// 	};
+
+// 	const d = new dijkstra(graph, 1);
+	
+// 	d.selectNode();
+// 	expect(d.currentNode).toBe(1);
+
+// 	d.selectNode();
+// 	expect(d.currentNode).toBe(3);
+
+// 	d.selectNode();
+// 	expect(d.currentNode).toBe(5);
+
+// 	d.selectNode();
+// 	expect(d.currentNode).toBe(6);
+// })
+
+test('examineNodes properly sets nodeData for children of first node', () => {
 	const graph = {
 	  1: {2: 5, 3: 2},
 	  2: {4: 4, 5: 2},
@@ -106,17 +126,71 @@ test('selectNode sets currentNode to first node when called on newly initialized
 	  6: {}
 	};
 
-	const d = new dijkstra(graph);
-	
-	d.selectNode();
-	expect(d.currentNode).toBe(1);
+	const d = new dijkstra(graph, 1);
 
-	d.selectNode();
-	expect(d.currentNode).toBe(3);
+	const currentChildNodes = d.getChildNodes(d.currentNode);
 
-	d.selectNode();
-	expect(d.currentNode).toBe(5);
+	d.examineNodes(currentChildNodes);
 
-	d.selectNode();
-	expect(d.currentNode).toBe(6);
+	expect(d.nodeData[2]["weightFromFirst"]).toBe(5);
+	expect(d.nodeData[2]["previousNode"]).toBe(1);
+	expect(d.nodeData[3]["weightFromFirst"]).toBe(2);
+	expect(d.nodeData[3]["previousNode"]).toBe(1);
+})
+
+test('examineNodes properly sets nodeData for first selected node after first node', () => {
+	const graph = {
+	  1: {2: 7, 3: 3},
+	  2: {1: 7, 3: 1, 4: 2, 5: 6},
+	  3: {1: 3, 2: 1, 4: 2},
+	  4: {2: 2, 3: 2, 5: 4},
+	  5: {2: 6, 4: 4},
+	};
+	let currentChildNodes;
+
+	const d = new dijkstra(graph, 1);
+
+	currentChildNodes = d.getChildNodes(d.currentNode);
+	d.examineNodes(currentChildNodes);
+
+	expect(d.nodeData[2]["weightFromFirst"]).toBe(7);
+	expect(d.nodeData[2]["previousNode"]).toBe(1);
+	expect(d.nodeData[3]["weightFromFirst"]).toBe(3);
+	expect(d.nodeData[3]["previousNode"]).toBe(1);
+
+	d.selectNode()
+	currentChildNodes = d.getChildNodes(d.currentNode);
+	d.examineNodes(currentChildNodes);
+
+	expect(d.nodeData[2]["weightFromFirst"]).toBe(4);
+	expect(d.nodeData[2]["previousNode"]).toBe(3);
+	expect(d.nodeData[4]["weightFromFirst"]).toBe(5);
+	expect(d.nodeData[4]["previousNode"]).toBe(3);
+})
+
+test('createNodeData creates proper node data', () => {
+	const graph = {
+	  1: {2: 7, 3: 3},
+	  2: {1: 7, 3: 1, 4: 2, 5: 6},
+	  3: {1: 3, 2: 1, 4: 2},
+	  4: {2: 2, 3: 2, 5: 4},
+	  5: {2: 6, 4: 4},
+	};
+
+	const d = new dijkstra(graph, 1);
+
+	d.createNodeData();
+
+	expect(d.nodeData[1]["weightFromFirst"]).toBe(0);
+	expect(d.nodeData[1]["previousNode"]).toBe(null);
+	expect(d.nodeData[2]["weightFromFirst"]).toBe(4);
+	expect(d.nodeData[2]["previousNode"]).toBe(3);
+	expect(d.nodeData[3]["weightFromFirst"]).toBe(3);
+	expect(d.nodeData[3]["previousNode"]).toBe(1);
+	expect(d.nodeData[4]["weightFromFirst"]).toBe(5);
+	expect(d.nodeData[4]["previousNode"]).toBe(3);
+	expect(d.nodeData[5]["weightFromFirst"]).toBe(9);
+	expect(d.nodeData[5]["previousNode"]).toBe(4);
+
+
 })
