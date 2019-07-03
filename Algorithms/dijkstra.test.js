@@ -191,6 +191,6 @@ test('createNodeData creates proper node data', () => {
 	expect(d.nodeData[4]["previousNode"]).toBe(3);
 	expect(d.nodeData[5]["weightFromFirst"]).toBe(9);
 	expect(d.nodeData[5]["previousNode"]).toBe(4);
-
-
 })
+
+// TODO: test that the algorithm can accept non-numeric node names
