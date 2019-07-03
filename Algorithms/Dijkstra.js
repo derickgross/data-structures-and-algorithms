@@ -124,8 +124,6 @@ class dijkstra {
 
 		return path;
 	}
-
-	// TODO: add method to return shortest path from starting node to any destination node
 }
 
 module.exports = {
