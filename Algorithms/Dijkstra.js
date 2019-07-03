@@ -99,13 +99,30 @@ class dijkstra {
 		this.selectNode();
 	}
 
-	createNodeData() {
+	createNodeData(start = this.start) {
+		if (start != this.start) {
+			this.start = start;
+			initializeNodeData();
+		}
+
 		let processed = 0;
 
 		while (this.unvisitedNodes.length > 0 && this.currentNode) {
 			this.visitNode();
 			processed++;
 		}
+	}
+
+	getOptimalPath(destination, start = this.start) {
+		let current = destination;
+		const path = [];
+
+		while (!!current) {
+			path.unshift(current);
+			current = this.nodeData[current]["previousNode"];
+		}
+
+		return path;
 	}
 
 	// TODO: add method to return shortest path from starting node to any destination node

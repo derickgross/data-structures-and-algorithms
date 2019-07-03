@@ -193,4 +193,27 @@ test('createNodeData creates proper node data', () => {
 	expect(d.nodeData[5]["previousNode"]).toBe(4);
 })
 
+test('getOptimalPath returns optimal path', () => {
+	const graph = {
+	  1: {2: 7, 3: 3},
+	  2: {1: 7, 3: 1, 4: 2, 5: 6},
+	  3: {1: 3, 2: 1, 4: 2},
+	  4: {2: 2, 3: 2, 5: 4},
+	  5: {2: 6, 4: 4},
+	};
+
+	const d = new dijkstra(graph, 1);
+
+	d.createNodeData();
+
+	const optimalPath = d.getOptimalPath(4, 1);
+
+	expect(optimalPath.length).toBe(3);
+	expect(optimalPath[0]).toBe(1);
+	expect(optimalPath[1]).toBe(3);
+	expect(optimalPath[2]).toBe(4);
+})
+
 // TODO: test that the algorithm can accept non-numeric node names
+
+// TODO: test that createNodeData can properly process data when provided a new starting node
